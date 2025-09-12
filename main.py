@@ -8,10 +8,16 @@ def main():
     
     # 1. Definicja wartości charakterystycznych (cvalues)
     # Dla każdego kryterium definiujemy 3 poziomy (min, średni, max)
+    # cvalues = [
+    #     [1, 5, 10],    # Kryterium 1: np. cena (niższa lepsza)
+    #     [2, 6, 10],    # Kryterium 2: np. jakość (wyższa lepsza)
+    #     [0, 5, 10]     # Kryterium 3: np. dostępność (wyższa lepsza)
+    # ]
+
     cvalues = [
-        [1, 5, 10],    # Kryterium 1: np. cena (niższa lepsza)
-        [2, 6, 10],    # Kryterium 2: np. jakość (wyższa lepsza)
-        [0, 5, 10]     # Kryterium 3: np. dostępność (wyższa lepsza)
+        [1, 3, 5, 7, 10],    # koszt: 5 poziomów
+        [2, 4, 6, 8, 10],    # jakość: 5 poziomów  
+        [0, 3, 5, 7, 10]     # dostępność: 5 poziomów
     ]
     
     print("Wartości charakterystyczne:")
@@ -24,7 +30,6 @@ def main():
     
     print(f"\nObiekty charakterystyczne: {n_objects}")
     print(f"Porównania parowe: {n_comparisons}")
-    print("\nUWAGA: To może zająć trochę czasu!")
     
     # 2. ID modelu
     model_id = "llama3.2:3b"  # Pobierz z http://127.0.0.1:1234/v1/models lub ollama list 
@@ -44,18 +49,32 @@ def main():
     #     [6, 6, 6]    # Średnie wszystko
     # ]
 
-    # obvious test 
+    # # obvious test 
+    # alternatives = [
+    #     [10, 2, 0],  # NAJGORSZE: najdroższe, najgorsza jakość, niedostępne
+    #     [5, 6, 5],   # ŚREDNIE: średnia cena, średnia jakość, średnia dostępność  
+    #     [1, 10, 10]  # NAJLEPSZE: najtańsze, najlepsza jakość, w pełni dostępne
+    # ]
+
+    # # Bardziej zbalansowne
+    # alternatives = [
+    #     [3, 8, 4],   # tanie, bardzo dobra jakość, słaba dostępność  
+    #     [7, 5, 9],   # drogie, średnia jakość, świetna dostępność
+    #     [5, 6, 6]    # średnie, średnie, średnie
+    # ]
+
     alternatives = [
-        [10, 2, 0],  # NAJGORSZE: najdroższe, najgorsza jakość, niedostępne
-        [5, 6, 5],   # ŚREDNIE: średnia cena, średnia jakość, średnia dostępność  
-        [1, 10, 10]  # NAJLEPSZE: najtańsze, najlepsza jakość, w pełni dostępne
+        [2, 9, 3],   # tanie, świetne, słabo dostępne
+        [8, 4, 9],   # drogie, słabe, bardzo dostępne
+        [4, 7, 6],   # średnio tanie, dobre, średnio dostępne
+        [6, 6, 8],   # droższe, średnie, bardzo dostępne
+        [3, 5, 5]    # tanie, średnie, średnie
     ]
     
     print(f"\nAlternatywy do oceny:")
     for i, alt in enumerate(alternatives):
         print(f"  Alternatywa {i+1}: {alt}")
     
-    print("\nOcenianie alternatyw...")
     preferences = comet(np.array(alternatives))
     
     # 6. Wyniki
