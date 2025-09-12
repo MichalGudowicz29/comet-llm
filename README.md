@@ -11,6 +11,20 @@ client = OpenAI(
 ```bash
 ollama list
 ```
+5. Jeżeli jest to wpisać go w model_id:
+```python
+    model_id = "llama3.2:3b"
+```
+6. Uruchomić `main.py` lub `direct_ranking.py`
+
+#### Note! 
+Gdy zmieniamy alternatywy trzeba je zmienić zarówno w `main.py` jak i `direct_ranking.py` oraz uzupełnić ranking COMET w pliku `direct_ranking.py` w sekcji:
+```python
+    # 2. COMET+LLM  
+    print(f"\n--- COMET+LLM ---") 
+    comet_ranking = [4,2,3,5,1] # Tutaj wpisac ranking ktory dal nam nasz main.py 
+    print(f"Ranking COMET: {comet_ranking}")
+```
 
 
 
