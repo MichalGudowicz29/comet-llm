@@ -1,3 +1,18 @@
+1. Połączyć się z maszyną `192.168.205.44`
+2. Uruchomić serwer ollama `ollama serve`
+3. Wpisać IP serwera ollama w pliku `llm.py` w sekcji:
+```python
+client = OpenAI(
+        base_url="http://127.0.0.1:11434/v1",
+        api_key="ollama" # nie trzeba prawdziwego api 
+    )
+```
+4. Sprawdzić czy nasz model jest pobrany
+```bash
+ollama list
+```
+
+
 
 #### `llm.py`
 
