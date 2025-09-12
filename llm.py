@@ -14,8 +14,8 @@ def llm_query(prompt: str, model_id: str, temperature: float = 0.3) -> str:
     """
     # Klient OpenAI skonfigurowany dla LM Studio
     client = OpenAI(
-        base_url="http://127.0.0.1:1234/v1",
-        api_key="lm-studio" # nie trzeba prawdziwego api 
+        base_url="http://127.0.0.1:11434/v1",
+        api_key="ollama" # nie trzeba prawdziwego api 
     )
     
     messages = [

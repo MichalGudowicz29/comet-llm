@@ -1,19 +1,19 @@
 import numpy as np
 from pymcdm.methods.comet_tools import ManualExpert
 from llm import llm_query
+import re
 
 
 class LLMExpert(ManualExpert):
     """
     klasa, która zastępuje ręczne odpowiedzi eksperta odpowiedziami LLM
     """
-    
-    def __init__(self, model_id: str):
-        super().__init__()
+    def __init__(self, model_id: str, criteria_names):
+        super().__init__(criteria_names)
         self.model_id = model_id
         self.pytanie_nr = 0
     
-    def _query_user(self, co1: np.ndarray, co2: np.ndarray) -> int:
+    def _query_user(self, co1_name: str, co2_name: str) -> int:
         """
         Metoda wywoływana przez COMET do porównania dwóch obiektów charakterystycznych.
         Zwraca 1 jeśli co1 > co2, 0 jeśli co1 < co2
@@ -21,30 +21,43 @@ class LLMExpert(ManualExpert):
         self.pytanie_nr += 1
         print(f"\n--- Pytanie {self.pytanie_nr} ---")
         
-        # Formatujemy obiekty charakterystyczne
-        obiekt_a = f"Obiekt A: {co1}"
-        obiekt_b = f"Obiekt B: {co2}"
+        # Znajdź indeksy obiektów
+        co1_idx = list(self.co_names).index(co1_name)
+        co2_idx = list(self.co_names).index(co2_name)
         
-        # Tworzymy prompt dla LLM
-        prompt = f"""Porównaj dwa obiekty pod względem ich ogólnej jakości/atrakcyjności:
+        # Pobierz rzeczywiste wartości
+        co1_values = self.characteristic_objects[co1_idx]
+        co2_values = self.characteristic_objects[co2_idx]
 
-{obiekt_a}
-{obiekt_b}
+        prompt = f"""
+Jesteś ekspertem wybierającym lepszy obiekt.
 
-Który obiekt jest lepszy? Odpowiedz dokładnie "A" lub "B"."""
+Obiekt A: koszt={co1_values[0]}, jakość={co1_values[1]}, dostępność={co1_values[2]}
+Obiekt B: koszt={co2_values[0]}, jakość={co2_values[1]}, dostępność={co2_values[2]}
 
-        print(f"Porównuję: {co1} vs {co2}")
-        
-        # Wysyłamy zapytanie do LLM
+Zasady oceny:
+- niższy koszt = lepiej
+- wyższa jakość = lepiej
+- wyższa dostępność (0–10) = lepiej
+- dostępność=0 oznacza całkowity brak dostępności = bardzo źle
+
+**Instrukcja:** Po przeanalizowaniu wszystkich kryteriów, odpowiedź **wyłącznie jedną literą**: A lub B.  
+Nie pisz nic więcej, żadnego uzasadnienia, żadnego komentarza.  
+Twoja odpowiedź musi być jednoznaczna.
+"""
+        print(f"Porównuję: {co1_name} {co1_values} vs {co2_name} {co2_values}")
+
         odpowiedz = llm_query(prompt, self.model_id)
-        print(f"Odpowiedź LLM: {odpowiedz}")
-        
-        # Parsujemy odpowiedź
         odpowiedz_clean = odpowiedz.strip().upper()
-        
         if "A" in odpowiedz_clean:
-            print("LLM wybrał A (co1 > co2)")
-            return 1  # co1 jest lepszy
+            print("A > B")
+            return 1
+        elif "B" in odpowiedz_clean:
+            print("B > A")
+            return 0
         else:
-            print("LLM wybrał B (co2 > co1)")
-            return 0  # co2 jest lepszy
+            print("niejednoznacznie")
+            score_a = -co1_values[0] + co1_values[1] + co1_values[2]
+            score_b = -co2_values[0] + co2_values[1] + co2_values[2]
+            return 1 if score_a >= score_b else 0
+

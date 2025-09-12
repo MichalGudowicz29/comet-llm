@@ -27,7 +27,7 @@ def main():
     print("\nUWAGA: To może zająć trochę czasu!")
     
     # 2. ID modelu
-    model_id = "bielik-1.5b-v3.0-instruct"  # Pobierz z http://127.0.0.1:1234/v1/models
+    model_id = "llama3.2:3b"  # Pobierz z http://127.0.0.1:1234/v1/models lub ollama list 
     print(f"Używany model: {model_id}")
     
     # 3. Tworzenie eksperta LLM (zamiast ManualExpert)
@@ -38,10 +38,17 @@ def main():
     print("Model COMET utworzony")
     
     # 5. Ocena alternatyw
+    # alternatives = [
+    #     [3, 8, 7],   # Średnia cena, dobra jakość, dobra dostępność
+    #     [8, 4, 9],   # Wysoka cena, słaba jakość, bardzo dobra dostępność
+    #     [6, 6, 6]    # Średnie wszystko
+    # ]
+
+    # obvious test 
     alternatives = [
-        [3, 8, 7],   # Średnia cena, dobra jakość, dobra dostępność
-        [8, 4, 9],   # Wysoka cena, słaba jakość, bardzo dobra dostępność
-        [6, 6, 6]    # Średnie wszystko
+        [10, 2, 0],  # NAJGORSZE: najdroższe, najgorsza jakość, niedostępne
+        [5, 6, 5],   # ŚREDNIE: średnia cena, średnia jakość, średnia dostępność  
+        [1, 10, 10]  # NAJLEPSZE: najtańsze, najlepsza jakość, w pełni dostępne
     ]
     
     print(f"\nAlternatywy do oceny:")
@@ -49,7 +56,7 @@ def main():
         print(f"  Alternatywa {i+1}: {alt}")
     
     print("\nOcenianie alternatyw...")
-    preferences = comet(alternatives)
+    preferences = comet(np.array(alternatives))
     
     # 6. Wyniki
     print(f"\n=== WYNIKI ===")
