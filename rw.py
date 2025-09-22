@@ -1,6 +1,8 @@
 import numpy as np
 import pymcdm as pm
 import matplotlib.pyplot as plt
+from pymcdm.helpers import correlation_matrix
+from pymcdm.correlations import rw
 
 rankings = np.array([
     [1, 6, 9, 2, 8, 5, 3, 7, 4],  # LLM
@@ -10,15 +12,7 @@ rankings = np.array([
 ])
 
 # Oblicz macierz korelacji RW między wszystkimi parami
-n = len(rankings)
-corr_matrix = np.zeros((n, n))
-
-for i in range(n):
-    for j in range(n):
-        if i == j:
-            corr_matrix[i, j] = 1.0  # Korelacja sama ze sobą = 1
-        else:
-            corr_matrix[i, j] = pm.correlations.rw(rankings[i], rankings[j])
+corr_matrix = correlation_matrix(rankings, rw)
 
 labels = ['LLM', 'COMET+LLM', 'LLM+Sug.', 'COMET+LLM+Sug.']
 
@@ -26,7 +20,7 @@ pm.visuals.correlation_heatmap(
     corr_matrix, 
     labels=labels,
     colorbar=True,
-    cmap='RdYlBu_r'
+    cmap='Greens'
 )
 
 plt.show()
