@@ -46,3 +46,25 @@ if __name__ == "__main__":
     odpowiedz = llm_query(test_prompt, model_name)
     print(f"Pytanie: {test_prompt}")
     print(f"Odpowiedź: {odpowiedz}")
+
+
+
+def direct_llm_ranking(alternatives, model_id):
+    """Bezpośrednio pyta LLM o ranking"""
+    
+    # Przygotuj opis alternatyw
+    alt_text = ""
+    for i, alt in enumerate(alternatives):
+        alt_text += f"{i+1}. koszt={alt[0]}, jakość={alt[1]}, dostępność={alt[2]}\n"
+    
+    prompt = f"""
+Alternatywy:
+{alt_text}
+Zasady: niższy koszt=lepiej, wyższa jakość=lepiej, wyższa dostępność=lepiej
+
+Uszereguj od najlepszej do najgorszej. Przedstaw mi ranking alternatyw uzywajac ich indeksów, np. 4,3,1,2,5 
+"""
+    
+    odpowiedz = llm_query(prompt, model_id)
+
+    return odpowiedz
