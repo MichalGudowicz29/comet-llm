@@ -34,11 +34,13 @@ class LLMExpert(TriadSupportExpert):
 You are an expert in multi-criteria decision making.  
 Two alternatives (A and B) are described by the same set of criteria.  
 
-Criteria: distance_parking, distance_roads, distance_stations, shops, restaurants, population_density  
+Criteria: distance_to_parking_meters_lower_better, distance_to_roads_meters_lower_better, distance_to_charging_stations_meters_lower_better, number_of_nearby_shops_higher_better, number_of_nearby_restaurants_higher_better, population_density_higher_better
 
-Alternative A: distance_parking={co1_values[0]}, distance_roads={co1_values[1]}, distance_stations={co1_values[2]}, shops={co1_values[3]}, restaurants={co1_values[4]}, population_density={co1_values[5]}  
+Alternative A: distance_from_nearest_parking={co1_values[0]}, distance_from_nearest_roads={co1_values[1]}, distance_from_nearest_charging_stations={co1_values[2]}, amount of nearby shops={co1_values[3]}, amount of nearby restaurants={co1_values[4]}, amount of nearby population_density={co1_values[5]}  
 
-Alternative B: distance_parking={co2_values[0]}, distance_roads={co2_values[1]}, distance_stations={co2_values[2]}, shops={co2_values[3]}, restaurants={co2_values[4]}, population_density={co2_values[5]}  
+Alternative B: distance_from_nearest_parking={co2_values[0]}, distance_from_nearest_roads={co2_values[1]}, distance_from_nearest_charging_stations={co2_values[2]}, amount of nearby shops={co2_values[3]}, amount of nearby restaurants={co2_values[4]}, amount of nearby population_density={co2_values[5]}  
+
+Consider that our goal is to place NEW car chargers in place available to as many people as possible and to allow them to spend their free time while charging. Based on this goal, decide which criteria are more important and use this to determine the overall better alternative.  
 
 Your task: decide which alternative is better overall.  
 Answer with **only one letter: A or B**. Do not explain, justify, or add anything else.  
