@@ -6,7 +6,7 @@ System porównywania decyzji wielokryterialnych używający COMET z ekspertem LL
 
 **llm.py** - komunikacja z LLM przez API OpenAI. Funkcja `llm_query()` wysyła prompt do lokalnego serwera ollama i zwraca odpowiedź.
 
-**llm_expert.py** - klasa `LLMExpert` dziedzicząca po `ManualExpert` z pymcdm. Zamiast pytać człowieka o porównania, wysyła zapytania do LLM. Każde porównanie to "Który obiekt lepszy? A czy B?".
+**llm_expert.py** - klasa `LLMExpert` dziedzicząca po `ManualExpert` lub `TriadSupportExpert` z biblioteki pymcdm. Zamiast pytać człowieka o porównania, wysyła zapytania do LLM. Każde porównanie to "Który obiekt lepszy? A czy B?".
 
 **main.py** - główny skrypt. Tworzy model COMET z LLMExpert, definiuje alternatywy i wartości charakterystyczne, uruchamia ocenę i pokazuje ranking.
 
