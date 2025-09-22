@@ -61,3 +61,7 @@ Twoja odpowiedź musi być jednoznaczna.
             score_b = -co2_values[0] + co2_values[1] + co2_values[2]
             return 1 if score_a >= score_b else 0
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 416b52b8702011743e1764b36929400a112c004e

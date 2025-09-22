@@ -14,6 +14,7 @@ def main():
     #     [0, 5, 10]     # Kryterium 3: np. dostępność (wyższa lepsza)
     # ]
 
+<<<<<<< HEAD
     # cvalues = [
     #     [1, 3, 5, 7, 10],    # koszt: 5 poziomów
     #     [2, 4, 6, 8, 10],    # jakość: 5 poziomów  
@@ -28,6 +29,12 @@ def main():
         [5, 20, 40],           # 4. Ilość sklepów – MAX
         [2, 10, 25],           # 5. Ilość restauracji – MAX
         [10, 30, 60]           # 6. Gęstość zaludnienia (bloki) – MAX
+=======
+    cvalues = [
+        [1, 3, 5, 7, 10],    # koszt: 5 poziomów
+        [2, 4, 6, 8, 10],    # jakość: 5 poziomów  
+        [0, 3, 5, 7, 10]     # dostępność: 5 poziomów
+>>>>>>> 416b52b8702011743e1764b36929400a112c004e
     ]
 
     
@@ -104,3 +111,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

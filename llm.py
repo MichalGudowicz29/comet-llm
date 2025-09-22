@@ -62,7 +62,11 @@ Alternatywy:
 {alt_text}
 Zasady: niższy koszt=lepiej, wyższa jakość=lepiej, wyższa dostępność=lepiej
 
+<<<<<<< HEAD
 Uszereguj od najlepszej do najgorszej. Przedstaw mi ranking alternatyw uzywajac ich indeksów, np. 4,3,1,2,5 
+=======
+Uszereguj od najlepszej do najgorszej. Odpowiedz TYLKO numerami przez przecinek, np: "3,1,2"
+>>>>>>> 416b52b8702011743e1764b36929400a112c004e
 """
     
     odpowiedz = llm_query(prompt, model_id)
