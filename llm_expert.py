@@ -1,10 +1,11 @@
 import numpy as np
-from pymcdm.methods.comet_tools import ManualExpert
+from manual_expert import ManualExpert
+from triad_supported_expert import TriadSupportExpert
 from llm import llm_query
 import re
 
-
-class LLMExpert(ManualExpert):
+# TriadSupport zamiast ManualExpert zeby zaoszczedzic czas 
+class LLMExpert(TriadSupportExpert):
     """
     klasa, która zastępuje ręczne odpowiedzi eksperta odpowiedziami LLM
     """
@@ -30,20 +31,18 @@ class LLMExpert(ManualExpert):
         co2_values = self.characteristic_objects[co2_idx]
 
         prompt = f"""
-Jesteś ekspertem wybierającym lepszy obiekt.
+You are an expert in multi-criteria decision making.  
+Two alternatives (A and B) are described by the same set of criteria.  
 
-Obiekt A: koszt={co1_values[0]}, jakość={co1_values[1]}, dostępność={co1_values[2]}
-Obiekt B: koszt={co2_values[0]}, jakość={co2_values[1]}, dostępność={co2_values[2]}
+Criteria: distance_parking, distance_roads, distance_stations, shops, restaurants, population_density  
 
-Zasady oceny:
-- niższy koszt = lepiej
-- wyższa jakość = lepiej
-- wyższa dostępność (0–10) = lepiej
-- dostępność=0 oznacza całkowity brak dostępności = bardzo źle
+Alternative A: distance_parking={co1_values[0]}, distance_roads={co1_values[1]}, distance_stations={co1_values[2]}, shops={co1_values[3]}, restaurants={co1_values[4]}, population_density={co1_values[5]}  
 
-**Instrukcja:** Po przeanalizowaniu wszystkich kryteriów, odpowiedź **wyłącznie jedną literą**: A lub B.  
-Nie pisz nic więcej, żadnego uzasadnienia, żadnego komentarza.  
-Twoja odpowiedź musi być jednoznaczna.
+Alternative B: distance_parking={co2_values[0]}, distance_roads={co2_values[1]}, distance_stations={co2_values[2]}, shops={co2_values[3]}, restaurants={co2_values[4]}, population_density={co2_values[5]}  
+
+Your task: decide which alternative is better overall.  
+Answer with **only one letter: A or B**. Do not explain, justify, or add anything else.  
+
 """
         print(f"Porównuję: {co1_name} {co1_values} vs {co2_name} {co2_values}")
 
@@ -61,7 +60,3 @@ Twoja odpowiedź musi być jednoznaczna.
             score_b = -co2_values[0] + co2_values[1] + co2_values[2]
             return 1 if score_a >= score_b else 0
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 416b52b8702011743e1764b36929400a112c004e

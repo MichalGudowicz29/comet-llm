@@ -58,15 +58,18 @@ def direct_llm_ranking(alternatives, model_id):
         alt_text += f"{i+1}. koszt={alt[0]}, jakość={alt[1]}, dostępność={alt[2]}\n"
     
     prompt = f"""
-Alternatywy:
-{alt_text}
-Zasady: niższy koszt=lepiej, wyższa jakość=lepiej, wyższa dostępność=lepiej
+You are an expert in multi-criteria decision making.  
+Here are several alternatives, each described by the same set of criteria:
+y
+Criteria types: cost (to minimize) and benefit(to maximize)
+Criteria: distance_parking (cost), distance_roads (cost), distance_stations (cost), shops (benefit), restaurants (benefit), population_density (benefit)
 
-<<<<<<< HEAD
-Uszereguj od najlepszej do najgorszej. Przedstaw mi ranking alternatyw uzywajac ich indeksów, np. 4,3,1,2,5 
-=======
-Uszereguj od najlepszej do najgorszej. Odpowiedz TYLKO numerami przez przecinek, np: "3,1,2"
->>>>>>> 416b52b8702011743e1764b36929400a112c004e
+Alternatives:  
+{alt_text}
+
+Task: Rank all the alternatives from best to worst according to your expert judgment.  
+Answer with the indices in order, separated by commas
+Do not provide any explanation or additional text. 
 """
     
     odpowiedz = llm_query(prompt, model_id)

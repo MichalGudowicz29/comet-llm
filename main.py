@@ -14,12 +14,11 @@ def main():
     #     [0, 5, 10]     # Kryterium 3: np. dostępność (wyższa lepsza)
     # ]
 
-<<<<<<< HEAD
     # cvalues = [
     #     [1, 3, 5, 7, 10],    # koszt: 5 poziomów
     #     [2, 4, 6, 8, 10],    # jakość: 5 poziomów  
     #     [0, 3, 5, 7, 10]     # dostępność: 5 poziomów
-    # ]
+    # ] 
 
     # wartosci do ladowarek
     cvalues = [
@@ -29,12 +28,6 @@ def main():
         [5, 20, 40],           # 4. Ilość sklepów – MAX
         [2, 10, 25],           # 5. Ilość restauracji – MAX
         [10, 30, 60]           # 6. Gęstość zaludnienia (bloki) – MAX
-=======
-    cvalues = [
-        [1, 3, 5, 7, 10],    # koszt: 5 poziomów
-        [2, 4, 6, 8, 10],    # jakość: 5 poziomów  
-        [0, 3, 5, 7, 10]     # dostępność: 5 poziomów
->>>>>>> 416b52b8702011743e1764b36929400a112c004e
     ]
 
     
@@ -54,7 +47,17 @@ def main():
     print(f"Używany model: {model_id}")
     
     # 3. Tworzenie eksperta LLM (zamiast ManualExpert)
-    expert_function = LLMExpert(model_id, criteria_names=["cost","quality","avaliblity"])
+    expert_function = LLMExpert(
+        model_id, 
+        criteria_names=[
+            "distance_parking", 
+            "distance_roads", 
+            "distance_stations", 
+            "shops", 
+            "restaurants", 
+            "population_density"
+        ]
+    )
     
     # 4. Utworzenie modelu COMET
     comet = COMET(cvalues, expert_function)
@@ -81,12 +84,27 @@ def main():
     #     [5, 6, 6]    # średnie, średnie, średnie
     # ]
 
+    # alternatives = [
+    #     [2, 9, 3],   # tanie, świetne, słabo dostępne
+    #     [8, 4, 9],   # drogie, słabe, bardzo dostępne
+    #     [4, 7, 6],   # średnio tanie, dobre, średnio dostępne
+    #     [6, 6, 8],   # droższe, średnie, bardzo dostępne
+    #     [3, 5, 5]    # tanie, średnie, średnie
+    # ]
+
     alternatives = [
-        [2, 9, 3],   # tanie, świetne, słabo dostępne
-        [8, 4, 9],   # drogie, słabe, bardzo dostępne
-        [4, 7, 6],   # średnio tanie, dobre, średnio dostępne
-        [6, 6, 8],   # droższe, średnie, bardzo dostępne
-        [3, 5, 5]    # tanie, średnie, średnie
+        #Dobre lokalizacja
+        [120, 150, 1800, 40, 25, 50],   # Lok 1
+        [200, 300, 1500, 35, 20, 45],   # Lok 2
+        [250, 250, 1700, 30, 15, 40],   # Lok 3
+        #Średnie lokalizacje 
+        [500, 400, 1200, 20, 10, 25],   # Lok 4
+        [600, 500, 1100, 18, 12, 22],   # Lok 5
+        [450, 350, 1000, 15, 8, 20],    # Lok 6
+        #Slabe lokalizacje 
+        [800, 700, 500, 5, 3, 8],       # Lok 7
+        [1000, 800, 400, 8, 4, 10],     # Lok 8
+        [900, 900, 300, 6, 2, 12]       # Lok 9
     ]
     
     print(f"\nAlternatywy do oceny:")
