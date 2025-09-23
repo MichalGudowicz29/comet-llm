@@ -61,12 +61,12 @@ def direct_llm_ranking(alternatives, model_id):
 You are performing multi-criteria decision analysis to rank location alternatives.
 
 Criteria evaluated for each location:
-- distance_to_parking_meters
-- distance_to_roads_meters  
-- distance_to_charging_stations_meters
-- number_of_nearby_shops
-- number_of_nearby_restaurants
-- population_density
+- distance_parking: distance to nearest parking (meters)
+- distance_roads: distance to main roads (meters) 
+- distance_stations: distance to existing charging stations (meters)
+- shops: number of nearby shops within 500m
+- restaurants: number of nearby restaurants within 500m
+- population_density: number of residental houses within 500m
 
 Alternatives:
 {alt_text}
@@ -80,8 +80,13 @@ Example format: 3,1,5,2,4
 #     prompt = f"""
 # You are an expert in multi-criteria decision making.
 
-# Criteria: distance_to_parking_meters_lower_better, distance_to_roads_meters_lower_better, distance_to_charging_stations_meters_lower_better, number_of_nearby_shops_higher_better, number_of_nearby_restaurants_higher_better, population_density_higher_better
-
+# Criteria: 
+# - distance_parking: distance to nearest parking (meters)
+# - distance_roads: distance to main roads (meters) 
+# - distance_stations: distance to existing charging stations (meters)
+# - shops: number of nearby shops within 500m
+# - restaurants: number of nearby restaurants within 500m
+# - population_density: number of residental houses within 500m
 # Alternatives:
 # {alt_text}
 
