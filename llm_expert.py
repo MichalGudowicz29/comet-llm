@@ -49,19 +49,57 @@ class LLMExpert(TriadSupportExpert):
 # """
 
 # Prompt bez sugestii eksperta 
+#         prompt = f"""
+#         You are an expert in multi-criteria decision making.  
+# Two alternatives (A and B) are described by the same set of criteria.  
+
+# Criteria: distance_parking, distance_roads, distance_stations, shops, restaurants, population_density  
+
+# Alternative A: distance_parking={co1_values[0]}, distance_roads={co1_values[1]}, distance_stations={co1_values[2]}, shops={co1_values[3]}, restaurants={co1_values[4]}, population_density={co1_values[5]}  
+
+# Alternative B: distance_parking={co2_values[0]}, distance_roads={co2_values[1]}, distance_stations={co2_values[2]}, shops={co2_values[3]}, restaurants={co2_values[4]}, population_density={co2_values[5]}  
+
+# Your task: decide which alternative is better overall.  
+# Answer with **only one letter: A or B**. Do not explain, justify, or add anything else.  
+#         """
+
+
+        # Poprawiony prompt bazowy bez sugestii eksperta
         prompt = f"""
-        You are an expert in multi-criteria decision making.  
-Two alternatives (A and B) are described by the same set of criteria.  
+        You are evaluating locations for electric vehicle charging stations using multi-criteria decision analysis.
 
-Criteria: distance_parking, distance_roads, distance_stations, shops, restaurants, population_density  
+Two location alternatives (A and B) are characterized by:
+- distance_parking: distance to nearest parking (meters)
+- distance_roads: distance to main roads (meters) 
+- distance_stations: distance to existing charging stations (meters)
+- shops: number of nearby shops within 500m
+- restaurants: number of nearby restaurants within 500m
+- population_density: people per km²
 
-Alternative A: distance_parking={co1_values[0]}, distance_roads={co1_values[1]}, distance_stations={co1_values[2]}, shops={co1_values[3]}, restaurants={co1_values[4]}, population_density={co1_values[5]}  
+# Alternative A: distance_parking={co1_values[0]}, distance_roads={co1_values[1]}, distance_stations={co1_values[2]}, shops={co1_values[3]}, restaurants={co1_values[4]}, population_density={co1_values[5]}  
 
-Alternative B: distance_parking={co2_values[0]}, distance_roads={co2_values[1]}, distance_stations={co2_values[2]}, shops={co2_values[3]}, restaurants={co2_values[4]}, population_density={co2_values[5]}  
+# Alternative B: distance_parking={co2_values[0]}, distance_roads={co2_values[1]}, distance_stations={co2_values[2]}, shops={co2_values[3]}, restaurants={co2_values[4]}, population_density={co2_values[5]}  
 
-Your task: decide which alternative is better overall.  
-Answer with **only one letter: A or B**. Do not explain, justify, or add anything else.  
+Choose the better location overall. Answer with only: A or B
         """
+
+        # Poprawiony prompt z sugestią eksperta
+#         prompt = f"""
+#         You are an EV charging station location expert. Goal: maximize station utilization and customer satisfaction.
+
+# CRITERIA PRIORITIES for optimal EV charging locations:
+# - distance_parking (m) → MINIMIZE (accessibility critical)
+# - distance_roads (m) → MINIMIZE (visibility/traffic important)  
+# - distance_stations (m) → BALANCE 1-3km (avoid cannibalization)
+# - shops (count) → MAXIMIZE (charging convenience)
+# - restaurants (count) → MAXIMIZE (customer experience)
+# - population_density (people/km²) → MAXIMIZE (demand driver - highest priority)
+
+# Alternative A: [values]
+# Alternative B: [values]
+
+# Consider: High population density locations with good accessibility and amenities perform best. Answer: A or B
+#         """
         print(f"Porównuję: {co1_name} {co1_values} vs {co2_name} {co2_values}")
 
         odpowiedz = llm_query(prompt, self.model_id)

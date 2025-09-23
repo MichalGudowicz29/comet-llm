@@ -52,46 +52,44 @@ if __name__ == "__main__":
 def direct_llm_ranking(alternatives, model_id):
     """Bezpośrednio pyta LLM o ranking"""
     
-    # Przygotuj opis alternatyw
     alt_text = ""
     for i, alt in enumerate(alternatives):
-        alt_text += f"{i+1}. koszt={alt[0]}, jakość={alt[1]}, dostępność={alt[2]}\n"
-    # Prompt z Sugestia eksperta
-#     prompt = f"""
-# You are an expert in multi-criteria decision making.  
-# Here are several alternatives, each described by the same set of criteria:
-# y
-# Criteria: distance_to_parking_meters_lower_better, distance_to_roads_meters_lower_better, distance_to_charging_stations_meters_lower_better, number_of_nearby_shops_higher_better, number_of_nearby_restaurants_higher_better, population_density_higher_better
+        alt_text += f"Alternative {i+1}: distance_to_parking={alt[0]}, distance_to_roads={alt[1]}, distance_to_charging_stations={alt[2]}, nearby_shops={alt[3]}, nearby_restaurants={alt[4]}, population_density={alt[5]}\n"
 
-# Alternatives:  
-# {alt_text}
-
-# Consider that our goal is to place NEW electric car chargers station in place available to as many people as possible and to allow them to spend their free time while charging. Based on this goal, decide which criteria are more important and use this to determine the ranking    .  
-
-# Task: Rank all the alternatives from best to worst according to your expert judgment.  
-# Answer with the indices in order, separated by commas
-# Do not provide any explanation or additional text. 
-# """
-    
-    # Prompt bez sugestii eksperta
+# Nowy prompt bez sugestii eksperta
     prompt = f"""
-    You are an expert in multi-criteria decision making.
+You are performing multi-criteria decision analysis to rank location alternatives.
 
-Here are several alternatives, each described by the same set of criteria:
-
-Criteria types: cost (to minimize) and benefit(to maximize)
-
-Criteria: distance_parking (cost), distance_roads (cost), distance_stations (cost), shops (benefit), restaurants (benefit), population_density (benefit)
+Criteria evaluated for each location:
+- distance_to_parking_meters
+- distance_to_roads_meters  
+- distance_to_charging_stations_meters
+- number_of_nearby_shops
+- number_of_nearby_restaurants
+- population_density
 
 Alternatives:
 {alt_text}
 
-Task: Rank all the alternatives from best to worst according to your expert judgment.
+Task: Rank all alternatives from best to worst based on overall multi-criteria evaluation.
+Answer with indices in order (best to worst), separated by commas.
+Example format: 3,1,5,2,4
+"""
 
-Answer with the indices in order, separated by commas
+# Nowy prompt z sugestia eksperta
+#     prompt = f"""
+# You are an expert in multi-criteria decision making.
 
-Do not provide any explanation or additional text.
-    """
+# Criteria: distance_to_parking_meters_lower_better, distance_to_roads_meters_lower_better, distance_to_charging_stations_meters_lower_better, number_of_nearby_shops_higher_better, number_of_nearby_restaurants_higher_better, population_density_higher_better
+
+# Alternatives:
+# {alt_text}
+
+# Consider that our goal is to make car chargers available to as many people as possible and to allow them to spend their free time while charging. Based on this goal, decide which criteria are more important and use this to determine the ranking.
+
+# Rank all alternatives from best to worst. Answer with indices in order, separated by commas.
+# """
+    
     odpowiedz = llm_query(prompt, model_id)
 
     return odpowiedz

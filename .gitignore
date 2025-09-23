@@ -1,11 +1,8 @@
 # Python bytecode
-<<<<<<< HEAD
-=======
-test.py
->>>>>>> 416b52b8702011743e1764b36929400a112c004e
 __pycache__/
 *.py[cod]
 *$py.class
+
 
 # Virtual environments
 venv/
@@ -26,6 +23,7 @@ Thumbs.db
 # Logs
 *.log
 *.pdf
+*.txt
 # Python packaging
 *.egg
 *.egg-info/
