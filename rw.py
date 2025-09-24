@@ -5,10 +5,10 @@ from pymcdm.helpers import correlation_matrix
 from pymcdm.correlations import rw
 
 rankings = np.array([
-    [1, 6, 9, 2, 8, 5, 3, 7, 4],  # LLM
-    [1, 2, 3, 6, 5, 4, 9, 8, 7],  # COMET+LLM
-    [3, 6, 9, 1, 2, 5, 4, 8, 7],  # LLM+Sugestie
-    [1, 2, 3, 6, 4, 5, 9, 8, 7],  # COMET+LLM+Sugestie
+    [3, 6, 8, 9, 2, 7, 4, 1, 5],  # LLM
+    [1, 3, 2, 7, 4, 8, 5, 9, 6],  # COMET+LLM
+    [3, 6, 8, 9, 2, 7, 4, 1, 5],  # LLM+Sugestie
+    [1, 3, 2, 7, 5, 8, 4, 9, 6],  # COMET+LLM+Sugestie
 ])
 
 # Oblicz macierz korelacji RW między wszystkimi parami

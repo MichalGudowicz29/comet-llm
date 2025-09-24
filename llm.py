@@ -1,6 +1,6 @@
 from openai import OpenAI
 
-def llm_query(prompt: str, model_id: str, temperature: float = 0.3) -> str:
+def llm_query(prompt: str, model_id: str, temperature: float = 0.0) -> str:
     """
     Funkcja do wysyłania zapytań do LLM przez LM Studio.
     
@@ -19,15 +19,26 @@ def llm_query(prompt: str, model_id: str, temperature: float = 0.3) -> str:
     )
     
     messages = [
-        {"role": "system", "content": "Jesteś ekspertem do spraw wspomagania decyzji wielokryterialnych."},
+        {"role": "system", "content": "You are an expert in multi-criteria decision making."},
         {"role": "user", "content": prompt}
     ]
     
     try:
+        # completion = client.chat.completions.create(
+        #     model=model_id,
+        #     messages=messages,
+        #     temperature=temperature
+        # )
+        # Proba innego completion (proba optymalizacji)
         completion = client.chat.completions.create(
             model=model_id,
-            messages=messages,
-            temperature=temperature
+            messages=[
+                {"role": "system", "content": "You are an expert in multi-criteria decision making."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=temperature,
+            #max_tokens=5,  # Tylko A lub B
+            #stop=["\n", ".", " "]  # Zatrzymaj natychmiast
         )
         
         return completion.choices[0].message.content
@@ -57,23 +68,27 @@ def direct_llm_ranking(alternatives, model_id):
         alt_text += f"Alternative {i+1}: distance_to_parking={alt[0]}, distance_to_roads={alt[1]}, distance_to_charging_stations={alt[2]}, nearby_shops={alt[3]}, nearby_restaurants={alt[4]}, population_density={alt[5]}\n"
 
 # Nowy prompt bez sugestii eksperta
-    prompt = f"""
-You are performing multi-criteria decision analysis to rank location alternatives.
+# do wersji z sugestia dodac : BUSINESS GOAL: Maximize the number of people who will use this charging station.
 
-Criteria evaluated for each location:
-- distance_parking: distance to nearest parking (meters)
-- distance_roads: distance to main roads (meters) 
-- distance_stations: distance to existing charging stations (meters)
-- shops: number of nearby shops within 500m
-- restaurants: number of nearby restaurants within 500m
-- population_density: number of residental houses within 500m
+    prompt = f"""
+You are choosing the optimal location for an EV charging station.  
+Rank ALL given alternatives from BEST to WORST.  
+You MUST output ALL indices exactly once. 
+
+criteria:
+- distance_parking in meters (lower is better)
+- distance_roads in meters (lower is better)
+- distance_stations in meters (lower is better)
+- shops (number of nearby shops within 500m, higher is better)
+- restaurants (number of nearby restaurants within 500m, higher is better)
+- population_density (number of residental houses within 500m, higher is better) 
+
 
 Alternatives:
 {alt_text}
 
-Task: Rank all alternatives from best to worst based on overall multi-criteria evaluation.
-Answer with indices in order (best to worst), separated by commas.
-Example format: 3,1,5,2,4
+Return ONLY the indices of ALL alternatives in ranking order, separated by commas. Do not explain or justify.
+
 """
 
 # Nowy prompt z sugestia eksperta

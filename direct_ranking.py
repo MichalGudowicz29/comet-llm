@@ -70,7 +70,7 @@ def compare_rankings():
     
     # 2. COMET+LLM  
     print(f"\n--- COMET+LLM ---") 
-    comet_ranking = [4,1,8,7,2,3,5,9,6] # Tutaj wpisac ranking ktory dal nam nasz main.py 
+    comet_ranking = [1,3,2,7,4,8,5,9,6] # Tutaj wpisac ranking ktory dal nam nasz main.py 
     print(f"Ranking COMET: {comet_ranking}")
     
     # 3. Porównanie

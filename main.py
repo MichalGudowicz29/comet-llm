@@ -52,7 +52,7 @@ def main():
     print(f"Porównania parowe: {n_comparisons}")
     
     # 2. ID modelu
-    model_id = "llama3.2:3b"  # Pobierz z http://127.0.0.1:1234/v1/models lub ollama list 
+    model_id = "llama3.1:8b"  # Pobierz z http://127.0.0.1:1234/v1/models lub ollama list 
     print(f"Używany model: {model_id}")
     
     # 3. Tworzenie eksperta LLM (zamiast ManualExpert)
@@ -128,9 +128,6 @@ def main():
         [45.55711931603732, 500, 204.54510904074675, 0, 6, 81],   # Lok 8
         [14.888901353082431, 500, 113.717469150257, 1, 5, 73]    # Lok 9
     ]
-
-
-
 
     print(f"\nAlternatywy do oceny:")
     for i, alt in enumerate(alternatives):
