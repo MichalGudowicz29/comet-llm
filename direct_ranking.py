@@ -40,25 +40,22 @@ def compare_rankings():
     # ]
 
     alternatives = [
-        [27.0806445188686, 500, 500, 4, 57, 745],      # Lok 1
-        [77.09176084680027, 74.79129720139595, 500, 4, 6, 208],   # Lok 2
-        [63.30163608595961, 500, 500, 3, 0, 1081],     # Lok 3
-        [30.384330931295878, 90.22181624382063, 500, 0, 3, 5],   # Lok 4
-        [103.8554029820573, 500, 500, 2, 0, 68],       # Lok 5
-        [14.69723652773175, 500, 500, 0, 0, 71],       # Lok 6
-        [47.21723107, 500, 349.2442126166036, 2, 30, 206],   # Lok 7
-        [45.55711931603732, 500, 204.54510904074675, 0, 6, 81],   # Lok 8
-        [14.888901353082431, 500, 113.717469150257, 1, 5, 73]    # Lok 9
+        [249, 2, 1.6, 32, 1.42, 14.0],    # Lenovo IdeaPad 100S-14IBR budzetowy
+        [544, 4, 2.0, 1000, 2.23, 15.6],  # Acer Aspire E5-576G srednia polka 
+        [1869, 8, 1.6, 256, 1.23, 13.3],  # Dell XPS 13 ultrabook
+        [1199, 8, 2.5, 256, 2.4, 15.6],   #  GL62M 7RD gaming
+        [2250.68, 8, 2.3, 256, 2.04, 15.6], # Dell XPS 15 laptop do pracy
+        [2799, 32, 2.7, 512, 3.8, 17.3]   # Asus ROG G701VI gaming high-end
     ]
 
-    model_id = "llama3.2:3b"
+    model_id = "llama3.1:8b"
     
     print("ALTERNATYWY:")
     alt_text = ""
     for i, alt in enumerate(alternatives):
-        alt_text += (f"{i+1}. odległość_parking={alt[0]}, odległość_drogi={alt[1]}, "
-                    f"odległość_stacje={alt[2]}, sklepy={alt[3]}, "
-                    f"restauracje={alt[4]}, gęstość_zaludnienia={alt[5]}\n")
+        alt_text += (f"{i+1}. Price ={alt[0]}, RAM size={alt[1]}, "
+                    f"CPU freq={alt[2]}, Storage in gb={alt[3]}, "
+                    f"weight in kg={alt[4]}, screen size in inches={alt[5]}\n")
 
     print(alt_text)
         

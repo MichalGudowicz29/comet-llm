@@ -65,30 +65,53 @@ def direct_llm_ranking(alternatives, model_id):
     
     alt_text = ""
     for i, alt in enumerate(alternatives):
-        alt_text += f"Alternative {i+1}: distance_to_parking={alt[0]}, distance_to_roads={alt[1]}, distance_to_charging_stations={alt[2]}, nearby_shops={alt[3]}, nearby_restaurants={alt[4]}, population_density={alt[5]}\n"
+        alt_text += f"Alternative {i+1}: Price in euros ={alt[0]}, RAM size in GB ={alt[1]}, CPU frequency ={alt[2]}, Storage in GB ={alt[3]}, weight in KG={alt[4]}, screen size in inches ={alt[5]}\n"
 
 # Nowy prompt bez sugestii eksperta
 # do wersji z sugestia dodac : BUSINESS GOAL: Maximize the number of people who will use this charging station.
 
-    prompt = f"""
-You are choosing the optimal location for an EV charging station.  
-Rank ALL given alternatives from BEST to WORST.  
-You MUST output ALL indices exactly once. 
+        # Wybierz sugestie
+        #goal = "None, just pick the best laptop overall."
+        #goal = "Find the best laptop for gaming."
+        #goal = "Find the most budget-friendly laptop for everyday tasks."
+        #goal = "Find the best laptop for work."
+        #goal = "Find the best laptop for programming and software development."
+        #goal = "Find the lightest, most compact laptop suitable for frequent travel."
+        #goal = "Find the best laptop for graphic design and video editing."
+        #goal = "Find the best laptop for a mix of gaming and work."
+        #goal = "Find the best laptop for students on a budget."
+        #goal = "Find the best laptop for business professionals."
+        #goal = "Find the best laptop for casual use and media consumption."
+        #goal = "Find the absolute cheapest laptop possible, regardless of performance."
+        #goal = "Find the most powerful laptop for intensive computational tasks like AI training."
+        goal = "None, just pick the best laptop overall."
 
-criteria:
-- distance_parking in meters (lower is better)
-- distance_roads in meters (lower is better)
-- distance_stations in meters (lower is better)
-- shops (number of nearby shops within 500m, higher is better)
-- restaurants (number of nearby restaurants within 500m, higher is better)
-- population_density (number of residental houses within 500m, higher is better) 
+        prompt = f"""
+        You are choosing the optimal laptop. And create a ranking of alternatives from best to worst based on the BUSINESS GOAL and criteria below.
 
+BUSINESS GOAL: {goal}
+
+Each alternative is a laptop with the following attributes:
+- price in euros (lower is better if budget is important)
+- RAM size in GB (higher is better if performance is important)
+- CPU freq in GHz (higher is better for performance)
+- storage type and size (larger capacity is better)
+- weight in kg (lighter is better for portability)
+- screen size in inches (smaller is better for mobility, larger is better for gaming and work)
 
 Alternatives:
 {alt_text}
 
-Return ONLY the indices of ALL alternatives in ranking order, separated by commas. Do not explain or justify.
+Think: Decide which laptop fits the goal better.  
+Do not always pick based on price - interpret the goal and decide what matters most.  
 
+Before choosing, answer:
+- Which laptop better serves the goal?
+- What specific advantages does each offer for goal?
+Then choose based on goal requirements.
+
+Answer only with a list of alternative numbers in order from best to worst, separated by commas. 
+Do not include any additional text. Do not explain or justify your ranking.
 """
 
 # Nowy prompt z sugestia eksperta
@@ -110,6 +133,7 @@ Return ONLY the indices of ALL alternatives in ranking order, separated by comma
 # Rank all alternatives from best to worst. Answer with indices in order, separated by commas.
 # """
     
+    print(f"Prompt do LLM:\n{prompt}")
     odpowiedz = llm_query(prompt, model_id)
 
     return odpowiedz

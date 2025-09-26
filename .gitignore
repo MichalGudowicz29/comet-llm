@@ -15,6 +15,7 @@ env/
 .idea/
 *.sublime-project
 *.sublime-workspace
+*.png
 
 # OS files
 .DS_Store

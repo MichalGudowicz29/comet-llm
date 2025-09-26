@@ -30,13 +30,14 @@ def main():
     #     [10, 30, 60]           # 6. Gęstość zaludnienia (bloki) – MAX
     # ]
 
+
     cvalues = [
-        [20, 50, 120],        # 1. Odległość od parkingów (m) – MIN (krótsza = lepsza)
-        [50, 100, 500],       # 2. Odległość od głównych dróg (m) – MIN
-        [100, 250, 500],      # 3. Odległość do istniejących stacji (m) – MAX (większa = lepsza)
-        [0, 2, 4],            # 4. Ilość sklepów – MAX
-        [0, 5, 60],          # 5. Ilość restauracji – MAX
-        [0, 250, 1100]       # 6. Gęstość zaludnienia – MAX
+        [200, 1000, 2800],        # 1. Cena (euro) – MIN
+        [2, 8, 32],       # 2. RAM (GB) – MAX
+        [1, 2, 3],      # 3. CPU freq (benchmark)
+        [32, 256, 1000],            # 4. Pojemność dysku (TB) – MAX
+        [1, 2, 4],          # 5. Waga (kg) – MIN
+        [13, 15, 18]       # 6. Rozmiar ekranu (cale) – MAX
     ]
 
     
@@ -56,15 +57,21 @@ def main():
     print(f"Używany model: {model_id}")
     
     # 3. Tworzenie eksperta LLM (zamiast ManualExpert)
+#     - price in euros (lower is better if budget is important)
+# - RAM size in GB (higher is better if performance is important)
+# - CPU freq in GHz (higher is better for performance)
+# - storage type and size (SSD is faster than HDD, larger capacity is better)
+# - weight in kg (lighter is better for portability)
+# - screen size in inches (smaller is better for mobility, larger is better for gaming and work)
     expert_function = LLMExpert(
         model_id, 
         criteria_names=[
-            "distance_parking", 
-            "distance_roads", 
-            "distance_stations", 
-            "shops", 
-            "restaurants", 
-            "population_density"
+            "price in euros", 
+            "ram size", 
+            "cpu frquency", 
+            "storage size", 
+            "weight", 
+            "screen size"
         ]
     )
     
@@ -117,17 +124,30 @@ def main():
     # ]
 
     #Faktyczne dane
+    # alternatives = [
+    #     [27.0806445188686, 500, 500, 4, 57, 745],      # Lok 1
+    #     [77.09176084680027, 74.79129720139595, 500, 4, 6, 208],   # Lok 2
+    #     [63.30163608595961, 500, 500, 3, 0, 1081],     # Lok 3
+    #     [30.384330931295878, 90.22181624382063, 500, 0, 3, 5],   # Lok 4
+    #     [103.8554029820573, 500, 500, 2, 0, 68],       # Lok 5
+    #     [14.69723652773175, 500, 500, 0, 0, 71],       # Lok 6
+    #     [47.21723107, 500, 349.2442126166036, 2, 30, 206],   # Lok 7
+    #     [45.55711931603732, 500, 204.54510904074675, 0, 6, 81],   # Lok 8
+    #     [14.888901353082431, 500, 113.717469150257, 1, 5, 73]    # Lok 9
+    # ]
+
+    #Laptopy
     alternatives = [
-        [27.0806445188686, 500, 500, 4, 57, 745],      # Lok 1
-        [77.09176084680027, 74.79129720139595, 500, 4, 6, 208],   # Lok 2
-        [63.30163608595961, 500, 500, 3, 0, 1081],     # Lok 3
-        [30.384330931295878, 90.22181624382063, 500, 0, 3, 5],   # Lok 4
-        [103.8554029820573, 500, 500, 2, 0, 68],       # Lok 5
-        [14.69723652773175, 500, 500, 0, 0, 71],       # Lok 6
-        [47.21723107, 500, 349.2442126166036, 2, 30, 206],   # Lok 7
-        [45.55711931603732, 500, 204.54510904074675, 0, 6, 81],   # Lok 8
-        [14.888901353082431, 500, 113.717469150257, 1, 5, 73]    # Lok 9
+        [249, 2, 1.6, 32, 1.42, 14.0],    # Lenovo IdeaPad 100S-14IBR budzetowy
+        [544, 4, 2.0, 1000, 2.23, 15.6],  # Acer Aspire E5-576G srednia polka 
+        [1869, 8, 1.6, 256, 1.23, 13.3],  # Dell XPS 13 ultrabook
+        [1199, 8, 2.5, 256, 2.4, 15.6],   #  GL62M 7RD gaming
+        [2250.68, 8, 2.3, 256, 2.04, 15.6], # Dell XPS 15 laptop do pracy
+        [2799, 32, 2.7, 512, 3.8, 17.3]   # Asus ROG G701VI gaming high-end
     ]
+
+    
+
 
     print(f"\nAlternatywy do oceny:")
     for i, alt in enumerate(alternatives):
