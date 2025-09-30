@@ -1,6 +1,7 @@
 from openai import OpenAI
 
-def llm_query(prompt: str, model_id: str, temperature: float = 0.0) -> str:
+# jak chujowe wyniki to zjebalem spojnosc41-50
+def llm_query(prompt: str, model_id: str, temperature: float = 0.8) -> str:
     """
     Funkcja do wysyłania zapytań do LLM przez LM Studio.
     

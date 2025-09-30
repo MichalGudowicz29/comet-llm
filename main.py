@@ -1,9 +1,13 @@
 import numpy as np
+import time
 from pymcdm.methods import COMET
 from llm_expert import LLMExpert
 
 
 def main():
+    # Pomiar czasu rozpoczęcia
+    start_time = time.time()
+    
     print("COMET z LLM Expert")
     
     # 1. Definicja wartości charakterystycznych (cvalues)
@@ -31,13 +35,20 @@ def main():
     # ]
 
 
+    # cvalues = [
+    #     [200, 1000, 2800],        # 1. Cena (euro) – MIN
+    #     [2, 8, 32],       # 2. RAM (GB) – MAX
+    #     [1, 2, 3],      # 3. CPU freq (benchmark)
+    #     # [32, 256, 1000],            # 4. Pojemność dysku (TB) – MAX
+    #     # [1, 2, 4],          # 5. Waga (kg) – MIN
+    #     # [13, 15, 18]       # 6. Rozmiar ekranu (cale) – MAX
+    # ]
+
+   # Wartosci do samochodow 
     cvalues = [
-        [200, 1000, 2800],        # 1. Cena (euro) – MIN
-        [2, 8, 32],       # 2. RAM (GB) – MAX
-        [1, 2, 3],      # 3. CPU freq (benchmark)
-        [32, 256, 1000],            # 4. Pojemność dysku (TB) – MAX
-        [1, 2, 4],          # 5. Waga (kg) – MIN
-        [13, 15, 18]       # 6. Rozmiar ekranu (cale) – MAX
+        [70, 110, 360], # C1: Mileage (k km) – MIN
+        [35, 45, 70], # C2: Price (k PLN) – MIN
+        [2013, 2017, 2018] # C3: Year – MAX
     ]
 
     
@@ -66,12 +77,9 @@ def main():
     expert_function = LLMExpert(
         model_id, 
         criteria_names=[
-            "price in euros", 
-            "ram size", 
-            "cpu frquency", 
-            "storage size", 
-            "weight", 
-            "screen size"
+            "mileage", 
+            "price", 
+            "year"
         ]
     )
     
@@ -80,86 +88,38 @@ def main():
     print("Model COMET utworzony")
     
     # 5. Ocena alternatyw
-    # alternatives = [
-    #     [3, 8, 7],   # Średnia cena, dobra jakość, dobra dostępność
-    #     [8, 4, 9],   # Wysoka cena, słaba jakość, bardzo dobra dostępność
-    #     [6, 6, 6]    # Średnie wszystko
-    # ]
 
-    # # obvious test 
-    # alternatives = [
-    #     [10, 2, 0],  # NAJGORSZE: najdroższe, najgorsza jakość, niedostępne
-    #     [5, 6, 5],   # ŚREDNIE: średnia cena, średnia jakość, średnia dostępność  
-    #     [1, 10, 10]  # NAJLEPSZE: najtańsze, najlepsza jakość, w pełni dostępne
-    # ]
-
-    # # Bardziej zbalansowne
-    # alternatives = [
-    #     [3, 8, 4],   # tanie, bardzo dobra jakość, słaba dostępność  
-    #     [7, 5, 9],   # drogie, średnia jakość, świetna dostępność
-    #     [5, 6, 6]    # średnie, średnie, średnie
-    # ]
-
-    # alternatives = [
-    #     [2, 9, 3],   # tanie, świetne, słabo dostępne
-    #     [8, 4, 9],   # drogie, słabe, bardzo dostępne
-    #     [4, 7, 6],   # średnio tanie, dobre, średnio dostępne
-    #     [6, 6, 8],   # droższe, średnie, bardzo dostępne
-    #     [3, 5, 5]    # tanie, średnie, średnie
-    # ]
-
-    # alternatives = [
-    #     #Dobre lokalizacja
-    #     [120, 150, 1800, 40, 25, 50],   # Lok 1
-    #     [200, 300, 1500, 35, 20, 45],   # Lok 2
-    #     [250, 250, 1700, 30, 15, 40],   # Lok 3
-    #     #Średnie lokalizacje 
-    #     [500, 400, 1200, 20, 10, 25],   # Lok 4
-    #     [600, 500, 1100, 18, 12, 22],   # Lok 5
-    #     [450, 350, 1000, 15, 8, 20],    # Lok 6
-    #     #Slabe lokalizacje 
-    #     [800, 700, 500, 5, 3, 8],       # Lok 7
-    #     [1000, 800, 400, 8, 4, 10],     # Lok 8
-    #     [900, 900, 300, 6, 2, 12]       # Lok 9
-    # ]
-
-    #Faktyczne dane
-    # alternatives = [
-    #     [27.0806445188686, 500, 500, 4, 57, 745],      # Lok 1
-    #     [77.09176084680027, 74.79129720139595, 500, 4, 6, 208],   # Lok 2
-    #     [63.30163608595961, 500, 500, 3, 0, 1081],     # Lok 3
-    #     [30.384330931295878, 90.22181624382063, 500, 0, 3, 5],   # Lok 4
-    #     [103.8554029820573, 500, 500, 2, 0, 68],       # Lok 5
-    #     [14.69723652773175, 500, 500, 0, 0, 71],       # Lok 6
-    #     [47.21723107, 500, 349.2442126166036, 2, 30, 206],   # Lok 7
-    #     [45.55711931603732, 500, 204.54510904074675, 0, 6, 81],   # Lok 8
-    #     [14.888901353082431, 500, 113.717469150257, 1, 5, 73]    # Lok 9
-    # ]
-
-    #Laptopy
     alternatives = [
-        [249, 2, 1.6, 32, 1.42, 14.0],    # Lenovo IdeaPad 100S-14IBR budzetowy
-        [544, 4, 2.0, 1000, 2.23, 15.6],  # Acer Aspire E5-576G srednia polka 
-        [1869, 8, 1.6, 256, 1.23, 13.3],  # Dell XPS 13 ultrabook
-        [1199, 8, 2.5, 256, 2.4, 15.6],   #  GL62M 7RD gaming
-        [2250.68, 8, 2.3, 256, 2.04, 15.6], # Dell XPS 15 laptop do pracy
-        [2799, 32, 2.7, 512, 3.8, 17.3]   # Asus ROG G701VI gaming high-end
+        [94.0, 69.9, 2017],   # A1
+        [297.0, 42.0, 2013],  # A2
+        [205.0, 68.9, 2015],  # A3
+        [360.0, 36.9, 2014],  # A4
+        [86.0, 59.9, 2017],   # A5
+        [79.6, 63.8, 2017],   # A6
+        [113.0, 56.9, 2015],  # A7
+        [171.0, 58.0, 2016]   # A8
     ]
 
-    
 
 
     print(f"\nAlternatywy do oceny:")
     for i, alt in enumerate(alternatives):
         print(f"  Alternatywa {i+1}: {alt}")
     
+    print("\n Comet.p")
     preferences = comet(np.array(alternatives))
+    print(comet.p)
+
+    print("\n Ranking CO")
+    print(comet.rank(comet.p))
     
     # 6. Wyniki
     print(f"\n=== WYNIKI ===")
     print("Preferencje (wyższe = lepsze):")
     for i, pref in enumerate(preferences):
         print(f"  Alternatywa {i+1}: {pref:.4f}")
+
+    
     
     # Ranking
     ranking_indices = np.argsort(preferences)[::-1]  # Od najlepszej do najgorszej
@@ -167,6 +127,14 @@ def main():
     print(f"\nRanking (od najlepszej):")
     for i, idx in enumerate(ranking_indices):
         print(f"  {i+1}. Alternatywa {idx+1}: {alternatives[idx]} (score: {preferences[idx]:.4f})")
+
+    # Pomiar i wyświetlenie czasu wykonania
+    end_time = time.time()
+    execution_time = end_time - start_time
+    
+    print(f"\n=== CZAS WYKONANIA ===")
+    print(f"Całkowity czas procesu: {execution_time:.2f} sekund")
+    print(f"Całkowity czas procesu: {execution_time/60:.2f} minut")
 
 
 if __name__ == "__main__":

@@ -44,3 +44,7 @@ pip-wheel-metadata/
 .venv/
 env/
 
+# folders
+archiwum mej/
+*.sh
+

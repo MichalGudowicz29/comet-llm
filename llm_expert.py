@@ -5,7 +5,7 @@ from llm import llm_query
 import re
 
 # TriadSupport zamiast ManualExpert zeby zaoszczedzic czas 
-class LLMExpert(TriadSupportExpert):
+class LLMExpert(ManualExpert):
     """
     klasa, która zastępuje ręczne odpowiedzi eksperta odpowiedziami LLM
     """
@@ -44,41 +44,34 @@ class LLMExpert(TriadSupportExpert):
         #goal = "Find the best laptop for casual use and media consumption."
         #DONE log_laptopy_cheapest.txt##goal = "Find the absolute cheapest laptop possible, regardless of performance."
         #goal = "Find the most powerful laptop for intensive computational tasks like AI training."
-        goal = "None, just pick the best laptop overall."
+        goal = "None, just pick the best car overall."
 
         prompt = f"""
-        You are choosing the optimal laptop.
+        You are choosing the optimal used car.
 
 BUSINESS GOAL: {goal}
 
-Each alternative is a laptop with the following attributes:
-- price in euros (lower is better if budget is important)
-- RAM size in GB (higher is better if performance is important)
-- CPU freq in GHz (higher is better for performance)
-- storage type and size (larger capacity is better)
-- weight in kg (lighter is better for portability)
-- screen size in inches (smaller is better for mobility, larger is better for gaming and work)
+Each alternative is a used car with the following attributes:
+- mileage in thousands km (lower is better - less wear)
+- price in thousands PLN (lower is better if budget is important)
+- production year (higher/newer is better - more modern features and reliability)
 
 Alternative A:
-- price={co1_values[0]} euros
-- RAM={co1_values[1]} GB
-- cpu frequency={co1_values[2]} GHz
-- storage={co1_values[3]} GB
-- weight={co1_values[4]} kg
-- screen size={co1_values[5]} inches
+- mileage={co1_values[0]}k km
+- price={co1_values[1]}k PLN
+- year={co1_values[2]}
+    
 Alternative B:
-- price={co2_values[0]} euros
-- RAM={co2_values[1]} GB
-- cpu frequency={co2_values[2]} GHz
-- storage={co2_values[3]} GB 
-- weight={co2_values[4]} kg
-- screen size={co2_values[5]} inches
+- mileage={co2_values[0]}k km
+- price={co2_values[1]}k PLN
+- year={co2_values[2]}
 
-Think: Decide which laptop fits the goal better.  
+
+Think: Decide which used car fits the goal better.  
 Do not always pick based on price - interpret the goal and decide what matters most.  
 
 Before choosing, answer:
-- Which laptop better serves the goal?
+- Which car better serves the goal?
 - What specific advantages does each offer for goal?
 Then choose based on goal requirements.
 
